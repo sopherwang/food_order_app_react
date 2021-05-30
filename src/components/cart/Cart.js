@@ -45,6 +45,7 @@ const Cart = (props) => {
     }, (data) => {
     })
     props.onHideCart()
+    cartCtx.reset()
   }
 
   const modalActions = <div className={classes.actions}>
