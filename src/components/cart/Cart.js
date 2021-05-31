@@ -15,6 +15,7 @@ const Cart = (props) => {
   const hasItems = items.length > 0
 
   const [isCheckout, setIsCheckout] = useState(false)
+  const {isLoading, error, sendRequest} = useHttp()
 
   const cartItemRemoveHandler = id => {
     dispatch(cartActions.removeFromCart(id))
@@ -34,8 +35,6 @@ const Cart = (props) => {
   const orderHandler = () => {
     setIsCheckout(true)
   }
-
-  const {isLoading, error, sendRequest} = useHttp()
 
   const submitOrderHandler = async (userData) => {
     await sendRequest({

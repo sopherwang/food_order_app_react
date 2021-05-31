@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {uiActions} from "./ui-slice";
 
 const defaultCartState = {
   items: [],
@@ -9,6 +10,10 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState: defaultCartState,
   reducers: {
+    replaceCart(state, action) {
+      state.totalAmount = action.payload.totalAmount;
+      state.items = action.payload.items;
+    },
     addToCart(state, action) {
       const item = action.payload
       const updatedTotalAmount = state.totalAmount + item.price * item.amount
