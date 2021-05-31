@@ -1,28 +1,31 @@
 import classes from './Cart.module.css'
 import Modal from "../common/Modal";
-import {useContext, useEffect, useState} from 'react'
-import CartContext from "../../store/cart-context";
+import {useState} from 'react'
 import CartItem from "./CartItem";
 import Checkout from "./Checkout";
 import useHttp from "../../hooks/use_http";
+import {useDispatch, useSelector} from "react-redux";
+import {cartActions} from "../../store/cart_slice";
 
 const Cart = (props) => {
-  const cartCtx = useContext(CartContext)
-  const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`
-  const hasItems = cartCtx.items.length > 0
+  const dispatch = useDispatch()
+  const items = useSelector(state => state.cart.items)
+  const totalAmountData = useSelector(state => state.cart.totalAmount)
+  const totalAmount = `$${totalAmountData.toFixed(2)}`
+  const hasItems = items.length > 0
 
   const [isCheckout, setIsCheckout] = useState(false)
 
   const cartItemRemoveHandler = id => {
-    cartCtx.removeItem(id)
+    dispatch(cartActions.removeFromCart(id))
   }
 
   const cartItemAddHandler = item => {
-    cartCtx.addItem({...item, amount: 1})
+    dispatch(cartActions.addToCart({...item, amount: 1}))
   }
 
   const cartItems = <ul className={classes['cart-items']}>{
-    cartCtx.items.map(cart => <CartItem key={cart.id}
+    items.map(cart => <CartItem key={cart.id}
                                         name={cart.name} amount={cart.amount} price={cart.price}
                                         onRemove={cartItemRemoveHandler.bind(null, cart.id)}
                                         onAdd={cartItemAddHandler.bind(null, cart)}/>)
@@ -40,12 +43,12 @@ const Cart = (props) => {
       method: 'POST',
       body: {
         user: userData,
-        orderedItems: cartCtx.items
+        orderedItems: items
       }
     }, (data) => {
     })
     props.onHideCart()
-    cartCtx.reset()
+    dispatch(cartActions.reset())
   }
 
   const modalActions = <div className={classes.actions}>
