@@ -1,5 +1,5 @@
 import classes from './Checkout.module.css'
-import useInput from "../../hooks/use-input";
+import useInput from "../../hooks/use_input";
 
 const Checkout = (props) => {
   const {
