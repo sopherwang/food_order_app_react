@@ -1,27 +1,31 @@
 import classes from './Cart.module.css'
 import Modal from "../common/Modal";
-import {useState} from 'react'
+import React, {useState} from 'react'
 import CartItem from "./CartItem";
 import useHttp from "../../hooks/use_http";
 import {useDispatch, useSelector} from "react-redux";
 import {cartActions} from "../../store/cart_slice";
-import Checkout from "./Checkout";
+import Checkout, {UserSubmitFormData} from "./Checkout";
+import {RootState} from "../../store";
+import CartModel from "../../models/CartModel";
 
-const Cart = (props) => {
+const Cart: React.FC<{
+  onHideCart: ()=>{}
+}> = (props) => {
   const dispatch = useDispatch()
-  const items = useSelector(state => state.cart.items)
-  const totalAmountData = useSelector(state => state.cart.totalAmount)
+  const items = useSelector((state: RootState) => state.cart.items)
+  const totalAmountData = useSelector((state: RootState) => state.cart.totalAmount)
   const totalAmount = `$${totalAmountData.toFixed(2)}`
   const hasItems = items.length > 0
 
   const [isCheckout, setIsCheckout] = useState(false)
   const {isLoading, error, sendRequest} = useHttp()
 
-  const cartItemRemoveHandler = id => {
+  const cartItemRemoveHandler = (id: string) => {
     dispatch(cartActions.removeFromCart(id))
   }
 
-  const cartItemAddHandler = item => {
+  const cartItemAddHandler = (item: CartModel) => {
     dispatch(cartActions.addToCart({...item, amount: 1}))
   }
 
@@ -36,7 +40,7 @@ const Cart = (props) => {
     setIsCheckout(true)
   }
 
-  const submitOrderHandler = async (userData) => {
+  const submitOrderHandler = async (userData: UserSubmitFormData) => {
     await sendRequest({
       url: 'https://react-http-demo-cf6f3-default-rtdb.firebaseio.com/order.json',
       method: 'POST',
@@ -44,8 +48,7 @@ const Cart = (props) => {
         user: userData,
         orderedItems: items
       }
-    }, (data) => {
-    })
+    }, () => {})
     props.onHideCart()
     dispatch(cartActions.reset())
   }

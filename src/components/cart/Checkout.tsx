@@ -2,8 +2,12 @@ import classes from './Checkout.module.css'
 import useInput from "../../hooks/use_input";
 import React from "react";
 
+export type UserSubmitFormData = {
+    name: string
+}
+
 const Checkout: React.FC<{
-    onConfirm: (s: {name: string}) => void,
+    onConfirm: (s: UserSubmitFormData) => void,
     onHideCart: () => {}
 }> = (props) => {
   const {

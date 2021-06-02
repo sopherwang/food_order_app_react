@@ -1,10 +1,14 @@
 import classes from './HeaderCartButton.module.css'
-import {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useSelector} from "react-redux";
+import {RootState} from "../../store";
+import CartModel from "../../models/CartModel";
 
-const HeaderCartButton = props => {
-  const items = useSelector(state => state.cart.items)
-  const numberOfCartItems = items.reduce((curNumber, item) => {
+const HeaderCartButton:React.FC<{
+  onClick: () => {}
+}> = props => {
+  const items = useSelector((state: RootState) => state.cart.items)
+  const numberOfCartItems = items.reduce((curNumber: number, item: CartModel) => {
     return curNumber + item.amount
   }, 0)
 

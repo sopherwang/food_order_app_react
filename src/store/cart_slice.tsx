@@ -1,6 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
+import CartModel from "../models/CartModel";
 
-const defaultCartState = {
+export type CartSliceStateObj = {
+  items: CartModel[],
+  totalAmount: number,
+}
+
+const defaultCartState: CartSliceStateObj = {
   items: [],
   totalAmount: 0,
 }
@@ -10,6 +16,9 @@ const cartSlice = createSlice({
   initialState: defaultCartState,
   reducers: {
     replaceCart(state, action) {
+      if(action.payload.items == null) {
+        return
+      }
       state.totalAmount = action.payload.totalAmount;
       state.items = action.payload.items;
     },
@@ -51,7 +60,7 @@ const cartSlice = createSlice({
         totalAmount: updatedTotalAmount,
       }
     },
-    reset(state, action) {
+    reset() {
       return defaultCartState
     },
   }
