@@ -1,7 +1,11 @@
 import classes from './Checkout.module.css'
 import useInput from "../../hooks/use_input";
+import React from "react";
 
-const Checkout = (props) => {
+const Checkout: React.FC<{
+    onConfirm: (s: {name: string}) => void,
+    onHideCart: () => {}
+}> = (props) => {
   const {
     value: enteredName,
     hasError: nameInputIsInvalid,
@@ -18,7 +22,7 @@ const Checkout = (props) => {
 
   const nameInputClasses = `${classes.control} ${nameInputIsInvalid ? classes.invalid : ''}`
 
-  const confirmHandler = (event) => {
+  const confirmHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!enteredNameIsValid) {

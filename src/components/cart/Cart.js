@@ -2,10 +2,10 @@ import classes from './Cart.module.css'
 import Modal from "../common/Modal";
 import {useState} from 'react'
 import CartItem from "./CartItem";
-import Checkout from "./Checkout";
 import useHttp from "../../hooks/use_http";
 import {useDispatch, useSelector} from "react-redux";
 import {cartActions} from "../../store/cart_slice";
+import Checkout from "./Checkout";
 
 const Cart = (props) => {
   const dispatch = useDispatch()
